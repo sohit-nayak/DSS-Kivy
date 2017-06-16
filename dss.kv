@@ -684,6 +684,7 @@
 					BoxLayout:
 						id: predict_optimize_algo_parameters_box
 						size_hint: (1,.5)
+						orientation: 'vertical'
 
 						ScrollView:
 							do_scroll_y: True
@@ -696,14 +697,14 @@
 								size_hint_y: None
 								spacing: (15, 20)
 								padding: [5, 5, 5, 5]
-
-
-
-
-
-					BoxLayout:
-						id: predict_optimize_btn
-						size_hint: (1,.1)
+						BoxLayout:
+							padding: [0, 5, 5, 0]
+							size_hint_y: .2
+							Button:
+								size_hint: (.5, 1)
+								pos_hint: {'x': .25}
+								text: 'Search'
+								on_press: root.grid_search()
 				# Widget:
 			 #        id: separator
 			 #        size_hint_y: None
