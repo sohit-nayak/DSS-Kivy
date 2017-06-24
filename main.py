@@ -145,6 +145,12 @@ class RootWidget(TabbedPanel):
 	degree_upper = ''
 	coef0_lower = ''
 	coef0_upper = ''
+	n_neighbors_lower = ''
+	n_neighbors_upper = ''
+	p_lower = ''
+	p_upper = ''
+	leaf_size_lower = ''
+	leaf_size_upper = ''
 
 	params = DictProperty()
 	
@@ -524,24 +530,24 @@ class RootWidget(TabbedPanel):
 				limits = {}
 				limits['type'] = 'Random Forest'
 				n_estimators_label = Label(text='n estimators', color=(1,1,1,2))
-				n_estimators_lower = TextInput(multiline=False,
+				self.n_estimators_lower = TextInput(tex3t='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower value')
-				n_estimators_upper = TextInput(multiline=False,
+				self.n_estimators_upper = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper value')
 				layout.add_widget(n_estimators_label)
-				layout.add_widget(n_estimators_lower)
-				layout.add_widget(n_estimators_upper)
-				limits['n_estimators'] = [n_estimators_lower, n_estimators_upper]
+				layout.add_widget(self.n_estimators_lower)
+				layout.add_widget(self.n_estimators_upper)
+				# limits['n_estimators'] = [n_estimators_lower, n_estimators_upper]
 
 				min_samples_leaf_label = Label(text='min samples\n    leaf', color=(1,1,1,2))
-				min_samples_leaf_lower = TextInput(multiline=False,
+				self.min_samples_leaf_lower = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower value')
-				min_samples_leaf_upper = TextInput(multiline=False,
+				self.min_samples_leaf_upper = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper value')
 				layout.add_widget(min_samples_leaf_label)
-				layout.add_widget(min_samples_leaf_lower)
-				layout.add_widget(min_samples_leaf_upper)
-				limits['min_sample_leaf'] = [min_samples_leaf_lower, min_samples_leaf_upper]
+				layout.add_widget(self.min_samples_leaf_lower)
+				layout.add_widget(self.min_samples_leaf_upper)
+				# limits['min_sample_leaf'] = [min_samples_leaf_lower, min_samples_leaf_upper]
 
 				max_depth_label = Label(text='max depth', color=(1,1,1,2))
 				max_depth_lower = TextInput(multiline=False,
@@ -554,14 +560,14 @@ class RootWidget(TabbedPanel):
 				limits['max_depth'] = [max_depth_lower, max_depth_upper]
 
 				min_samples_split_label = Label(text='min samples\n     split', color=(1,1,1,2))
-				min_samples_split_lower = TextInput(multiline=False,
+				self.min_samples_split_lower = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower value')
-				min_samples_split_upper = TextInput(multiline=False,
+				self.min_samples_split_upper = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper value')
 				layout.add_widget(min_samples_split_label)
-				layout.add_widget(min_samples_split_lower)
-				layout.add_widget(min_samples_split_upper)
-				limits['min_samples_split'] = [min_samples_split_lower, min_samples_split_upper]
+				layout.add_widget(self.min_samples_split_lower)
+				layout.add_widget(self.min_samples_split_upper)
+				# limits['min_samples_split'] = [min_samples_split_lower, min_samples_split_upper]
 
 				min_weight_fraction_leaf_label = Label(text='min weight\nfraction leaf', color=(1,1,1,2))
 				min_weight_fraction_leaf_lower = TextInput(multiline=False,
@@ -587,36 +593,36 @@ class RootWidget(TabbedPanel):
 			if self.ids.choose_classifier.text == 'KNN':
 				layout.clear_widgets()
 				limits = {}
-				limits['type'] = 'KNN'
+				# limits['type'] = 'KNN'
 				n_neighbors_label = Label(text='n neighbors', color=(1,1,1,2))
-				n_neighbors_lower = TextInput(multiline=False,
+				self.n_neighbors_lower = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower value')
-				n_neighbors_upper = TextInput(multiline=False,
+				self.n_neighbors_upper = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper value')
 				layout.add_widget(n_neighbors_label)
-				layout.add_widget(n_neighbors_lower)
-				layout.add_widget(n_neighbors_upper)
-				limits['n_neighbors'] = [n_neighbors_lower, n_neighbors_upper]
+				layout.add_widget(self.n_neighbors_lower)
+				layout.add_widget(self.n_neighbors_upper)
+				# limits['n_neighbors'] = [self.n_neighbors_lower, n_neighbors_upper]
 
 				p_label = Label(text='p', color=(1,1,1,2))
-				p_lower = TextInput(multiline=False,
+				self.p_lower = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower p value')
-				p_upper = TextInput(multiline=False,
+				self.p_upper = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper p value')
 				layout.add_widget(p_label)
-				layout.add_widget(p_lower)
-				layout.add_widget(p_upper)
-				limits['p'] = [p_lower, p_upper]
+				layout.add_widget(self.p_lower)
+				layout.add_widget(self.p_upper)
+				# limits['p'] = [p_lower, p_upper]
 
 				leaf_size_label = Label(text='leaf size', color=(1,1,1,2))
-				leaf_size_lower = TextInput(multiline=False,
+				self.leaf_size_lower = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower value')
-				leaf_size_upper = TextInput(multiline=False,
+				self.leaf_size_upper = TextInput(text='0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper value')
 				layout.add_widget(leaf_size_label)
-				layout.add_widget(leaf_size_lower)
-				layout.add_widget(leaf_size_upper)
-				limits['leaf_size'] = [leaf_size_lower, leaf_size_upper]
+				layout.add_widget(self.leaf_size_lower)
+				layout.add_widget(self.leaf_size_upper)
+				# limits['leaf_size'] = [leaf_size_lower, leaf_size_upper]
 
 				n_jobs_label = Label(text='n jobs', color=(1,1,1,2))
 				n_jobs_lower = TextInput(multiline=False,
@@ -714,6 +720,8 @@ class RootWidget(TabbedPanel):
 
 		model_type = self.ids.choose_classifier.text
 		parameters = {}
+		scoring= []
+		scores = ['accuracy', 'average_precision', 'f1_weighted', 'recall', 'roc_auc']
 
 		if model_type == 'SVM':
 			# collect and arrange data
@@ -742,13 +750,99 @@ class RootWidget(TabbedPanel):
 				coef0_hi = float(self.coef0_upper.text)
 				coef0_range = np.arange(coef0_lo, coef0_hi, 0.1)
 				parameters['coef0'] = coef0_range
+			for score in scores:
 
-			model = SVC()
-			cv_model = GridSearchCV(estimator=model, param_grid=parameters, cv=10)
-			cv_model.fit(self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text])
-			print cv_model.best_params_, 'done'
-			print cv_model.best_score_
-			print cv_model.cv_results_
+				model = SVC()
+				cv_model = GridSearchCV(estimator=model, param_grid=parameters, cv=5, scoring='%s' % score)
+				cv_model.fit(self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text])
+				print cv_model.best_params_, 'done'
+				print cv_model.best_score_
+				print cv_model.cv_results_
+				scoring.append(cv_model.best_score_)
+
+			self.ids.accuracy.text = str(scoring[0])
+			self.ids.precision.text = str(scoring[1])
+			self.ids.f1.text = str(scoring[2])
+			self.ids.recall.text = str(scoring[3])
+			self.ids.auc_roc.text = str(scoring[4])
+				
+
+		if model_type == 'KNN':
+			# collect and arrange data
+			if self.n_neighbors_lower.text != '0' and self.n_neighbors_upper.text != '0':
+				n_neighbors_lo = int(self.n_neighbors_lower.text)
+				n_neighbors_hi = int(self.n_neighbors_upper.text)
+				n_neighbors_range = np.arange(n_neighbors_lo, n_neighbors_hi, 1)
+				print n_neighbors_range
+				parameters['n_neighbors'] = n_neighbors_range
+
+			if self.p_lower.text != '0' and self.p_upper.text != '0':
+				p_lo = int(self.p_lower.text)
+				p_hi = int(self.p_upper.text)
+				p_range = np.arange(p_lo, p_hi, 1)
+				parameters['p'] = p_range
+
+			if self.leaf_size_lower.text != '0' and self.leaf_size_upper.text != '0':
+				leaf_size_lo = int(self.leaf_size_lower.text)
+				leaf_size_hi = int(self.leaf_size_upper.text)
+				leaf_size_range = np.arange(leaf_size_lo, leaf_size_hi, 1)
+				parameters['leaf_size'] = leaf_size_range
+
+			for score in scores:
+				model = KNeighborsClassifier()
+				cv_model = GridSearchCV(estimator=model, param_grid=parameters, cv=5, scoring='%s' % score)
+				cv_model.fit(self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text])
+				print cv_model.best_params_, 'done'
+				print cv_model.best_score_
+				print cv_model.cv_results_
+				scoring.append(cv_model.best_score_)
+
+			self.ids.accuracy.text = str(scoring[0])
+			self.ids.precision.text = str(scoring[1])
+			self.ids.f1.text = str(scoring[2])
+			self.ids.recall.text = str(scoring[3])
+			self.ids.auc_roc.text = str(scoring[4])
+
+		if model_type == 'Random Forest':
+			# collect and arrange data
+			if self.n_estimators_lower.text != '0' and self.n_estimators_upper.text != '0':
+				n_estimators_lo = int(self.n_estimators_lower.text)
+				n_estimators_hi = int(self.n_estimators_upper.text)
+				n_estimators_range = np.arange(n_estimators_lo, n_estimators_hi, 1)
+				print n_estimators_range
+				parameters['n_estimators'] = n_estimators_range
+
+			if self.min_samples_leaf_lower.text != '0' and self.min_samples_leaf_split_upper.text != '0':
+				min_samples_leaf_lo = int(self.min_samples_leaf_lower.text)
+				min_samples_leaf_hi = int(self.min_samples_leaf_upper.text)
+				min_samples_leaf_range = np.arange(min_samples_leaf_lo, min_samples_leaf_hi, 1)
+				parameters['min_samples_leaf'] = min_samples_leaf_range
+
+			if self.min_samples_split_lower.text != '0' and self.min_samples_split_upper.text != '0':
+				min_samples_split_lo = int(self.min_samples_split_lower.text)
+				min_samples_split_hi = int(self.min_samples_split_upper.text)
+				min_samples_split_range = np.arange(min_samples_split_lo, min_samples_split_hi, 1)
+				parameters['min_samples_split'] = min_samples_split_range
+
+			for score in scores:
+				model = RandomForestClassifier()
+				cv_model = GridSearchCV(estimator=model, param_grid=parameters, cv=5, scoring='%s' % score)
+				cv_model.fit(self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text])
+				print 'best parameters: ', cv_model.best_params_
+				print cv_model.best_score_
+				scoring.append(cv_model.best_score_)
+
+			self.ids.accuracy.text = str(scoring[0])
+			self.ids.precision.text = str(scoring[1])
+			self.ids.f1.text = str(scoring[2])
+			self.ids.recall.text = str(scoring[3])
+			self.ids.auc_roc.text = str(scoring[4])
+
+		# self.ids.accuracy.text = str(scoring[0])
+		# self.ids.precision.text = str(scoring[1])
+		# self.ids.f1.text = str(scoring[2])
+		# self.ids.recall.text = str(scoring[3])
+		# self.ids.auc_roc.text = str(scoring[4])
 
 	def manual_parameter_selection(self, *args):
 		pass
