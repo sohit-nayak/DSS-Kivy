@@ -246,6 +246,15 @@ class RootWidget(TabbedPanel):
 	# X = ''
 	# y = ''
 
+	c_lower = ''
+	c_upper = ''
+	tol_lower = ''
+	tol_upper = ''
+	degree_lower = ''
+	degree_upper = ''
+	coef0_lower = ''
+	coef0_upper = ''
+
 	params = DictProperty()
 	
 	def __init__(self, **kwargs):
@@ -253,7 +262,7 @@ class RootWidget(TabbedPanel):
 		Window.size = (1300, 700)
 
 	def ping(self, *args):
-		# self.big_dict[column] = value
+		# self.big_dict[column] = value33333
 		print args[0]
 		print args[1]
 		self.big_dict[args[0]][1] = args[1]
@@ -285,7 +294,7 @@ class RootWidget(TabbedPanel):
 			self.update_the_status = 'Only zip and csv extensions are allowed. More support will be available in future releases!'
 			return
 		if self.file_name.endswith('zip'):
-			# zf = zipfile.ZipFile(self.file_name)
+			# zf = zipfile.ZipFile(self.file_name)333
 			self.data = pd.read_csv(self.file_name, compression='zip', sep=',', quotechar='"')
 		else:
 			self.data = pd.read_csv(self.file_name)
@@ -318,7 +327,7 @@ class RootWidget(TabbedPanel):
 			lab = Label(text=column, size_hint_x=None, width=100)
 			ent = TextInput(size_hint_x=None, width=200)
 			# scroll_layout.add_widget(lab)
-			# scroll_layout.add_widget(ent)
+			# scroll_layout.add_widget(ent)3333
 
 	def import_test_dataset(self):
 		if self.test_file_name.endswith('zip'):
@@ -334,7 +343,7 @@ class RootWidget(TabbedPanel):
 			label = Label(text=str(sl+1), size_hint=(0.2,1), pos_hint={'top': 0.5 + self.size_hint[1]/2})
 			checkbox = CheckBox(text=column)
 			checkbox.bind(active=self.ping)
-			space = BoxLayout(size_hint=(0.4, 1)) 
+			space = BoxLayout(size_hint=(0.4, 1))
 			print 'done'
 			layout = self.ids.layout_content
 			name = Label(text=column)
@@ -407,7 +416,7 @@ class RootWidget(TabbedPanel):
 			self.update_the_status = 'Plots data and a linear regression model fit.'
 
 		elif graph == 'Kde Plot':
-			g = sns.FacetGrid(self.data, col=hue.text, row="survived")  
+			g = sns.FacetGrid(self.data, col=hue.text, row="survived")
 			g.map(sns.kdeplot, X.text, Y.text)
 			plt.xticks(rotation='vertical')
  			print plt.gcf().axes
@@ -461,6 +470,7 @@ class RootWidget(TabbedPanel):
 		roc_auc = 'Multiclass label'
 		precision = 'Multiclass label'
 		recall = 'Multiclass label'
+		self.prediction()
 		print self.model
 		self.prediction()
 
@@ -590,7 +600,7 @@ class RootWidget(TabbedPanel):
 			layout.clear_widgets()
 
 			
-			self.checkbox1.bind( on_press=lambda x: self.optimize_data('gridcv'),on_release=lambda x:self.populate_predict_algo_parameters())
+			self.checkbox1.bind(on_release=self.populate_predict_algo_parameters, on_press=lambda x: self.optimize_data('geneticalgo'))
 			label1 = Label(text='GridSearchCV')
 			checkbox2 = CheckBox(group='algo_selection')
 			checkbox2.bind( on_press=lambda x: self.optimize_data('geneticalgo'))
@@ -602,38 +612,52 @@ class RootWidget(TabbedPanel):
 		else:
 			layout.clear_widgets()
 
-	def populate_predict_algo_parameters(self):
+	def populate_predict_algo_parameters(self, *args):
 		layout = self.ids.predict_optimize_algo_parameters
+		limits = {}
 
 		if self.checkbox1.active == True:
 			if self.ids.choose_classifier.text == 'SVM':
+				limits = {}
+				limits['type'] = 'SVM'
 				layout.clear_widgets()
 				c_label = Label(text='c', color=(1,1,1,2))
-				c_lower = TextInput(multiline=False,
-	                                   size_hint=(None, None), height=30,width=140, hint_text='lower c value')
-				c_upper = TextInput(multiline=False,
-	                                   size_hint=(None, None), height=30,width=140, hint_text='upper c value')
+				self.c_lower = TextInput(text='0.0', multiline=False,
+					                                   size_hint=(None, None), height=30,width=140, hint_text='lower c value')
+				self.c_upper = TextInput(text='0.0', multiline=False,
+					                                   size_hint=(None, None), height=30,width=140, hint_text='upper c value')
 				layout.add_widget(c_label)
-				layout.add_widget(c_lower)
-				layout.add_widget(c_upper)
+				layout.add_widget(self.c_lower)
+				layout.add_widget(self.c_upper)
+				# c_lo = NumericProperty(float(c_lower.text))
+				# c_hi = NumericProperty(float(c_upper.text))
+				# limits['C'] = [c_lo, c_hi]
+				# self.c_lo = float(c_lower.text)
+				# self.c_hi = float(c_upper.text)
 
 				tol_label = Label(text='tol', color=(1,1,1,2))
-				tol_lower = TextInput(multiline=False,
+				self.tol_lower = TextInput(text='0.0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower tol value')
-				tol_upper = TextInput(multiline=False,
+				self.tol_upper = TextInput(text='0.0',multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper tol value')
 				layout.add_widget(tol_label)
-				layout.add_widget(tol_lower)
-				layout.add_widget(tol_upper)
+				layout.add_widget(self.tol_lower)
+				layout.add_widget(self.tol_upper)
+				# limits['tol'] = [tol_lower, tol_upper]
+				# self.tol_lo = float(tol_lower.text)
+				# self.tol_hi = float(tol_upper.text)
 
 				degree_label = Label(text='degree', color=(1,1,1,2))
-				degree_lower = TextInput(multiline=False,
+				self.degree_lower = TextInput(text='0',multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower degree value')
-				degree_upper = TextInput(multiline=False,
+				self.degree_upper = TextInput(text='0',multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper degree value')
 				layout.add_widget(degree_label)
-				layout.add_widget(degree_lower)
-				layout.add_widget(degree_upper)
+				layout.add_widget(self.degree_lower)
+				layout.add_widget(self.degree_upper)
+				# limits['degree'] = [degree_lower, degree_upper]3
+				# self.degree_lo = int(degree_lower.text)
+				# self.degree_hi = int(degree_upper.text)
 
 				gamma_label = Label(text='gamma', color=(1,1,1,2))
 				gamma_lower = TextInput(multiline=False,
@@ -643,24 +667,31 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(gamma_label)
 				layout.add_widget(gamma_lower)
 				layout.add_widget(gamma_upper)
+				limits['gamma'] = [gamma_lower, gamma_upper]
 
 				coef0_label = Label(text='coef0', color=(1,1,1,2))
-				coef0_lower = TextInput(multiline=False,
+				self.coef0_lower = TextInput(text='0.0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower coef0 value')
-				coef0_upper = TextInput(multiline=False,
+				self.coef0_upper = TextInput(text='0.0', multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='upper coef0 value')
 				layout.add_widget(coef0_label)
-				layout.add_widget(coef0_lower)
-				layout.add_widget(coef0_upper)
+				layout.add_widget(self.coef0_lower)
+				layout.add_widget(self.coef0_upper)
+				# limits['coef0'] = [coef0_lower, coef0_upper]333
+				# self.coef0_lo = float(coef0_lower.text)
+				# self.coef0_hi = float(coef0_upper.text)
 
 				kernel_label = Label(text = 'kernel', color=(1,1,1,2))
 				kernel_mainbutton = Button(text='Choose kernel',size_hint=(None, None), height=30,width=140)
 				kernel_mainbutton.bind(on_press=lambda x:self.dropDown(['rbf','linear','poly','sigmoid','precomputed'], kernel_mainbutton))
 				layout.add_widget(kernel_label)
 				layout.add_widget(kernel_mainbutton)
+				return limits
 
 			if self.ids.choose_classifier.text == 'Random Forest':
 				layout.clear_widgets()
+				limits = {}
+				limits['type'] = 'Random Forest'
 				n_estimators_label = Label(text='n estimators', color=(1,1,1,2))
 				n_estimators_lower = TextInput(multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower value')
@@ -669,6 +700,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(n_estimators_label)
 				layout.add_widget(n_estimators_lower)
 				layout.add_widget(n_estimators_upper)
+				limits['n_estimators'] = [n_estimators_lower, n_estimators_upper]
 
 				min_samples_leaf_label = Label(text='min samples\n    leaf', color=(1,1,1,2))
 				min_samples_leaf_lower = TextInput(multiline=False,
@@ -678,6 +710,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(min_samples_leaf_label)
 				layout.add_widget(min_samples_leaf_lower)
 				layout.add_widget(min_samples_leaf_upper)
+				limits['min_sample_leaf'] = [min_samples_leaf_lower, min_samples_leaf_upper]
 
 				max_depth_label = Label(text='max depth', color=(1,1,1,2))
 				max_depth_lower = TextInput(multiline=False,
@@ -687,6 +720,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(max_depth_label)
 				layout.add_widget(max_depth_lower)
 				layout.add_widget(max_depth_upper)
+				limits['max_depth'] = [max_depth_lower, max_depth_upper]
 
 				min_samples_split_label = Label(text='min samples\n     split', color=(1,1,1,2))
 				min_samples_split_lower = TextInput(multiline=False,
@@ -696,6 +730,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(min_samples_split_label)
 				layout.add_widget(min_samples_split_lower)
 				layout.add_widget(min_samples_split_upper)
+				limits['min_samples_split'] = [min_samples_split_lower, min_samples_split_upper]
 
 				min_weight_fraction_leaf_label = Label(text='min weight\nfraction leaf', color=(1,1,1,2))
 				min_weight_fraction_leaf_lower = TextInput(multiline=False,
@@ -705,6 +740,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(min_weight_fraction_leaf_label)
 				layout.add_widget(min_weight_fraction_leaf_lower)
 				layout.add_widget(min_weight_fraction_leaf_upper)
+				limits['min_weight_fraction_leaf'] = [min_weight_fraction_leaf_lower, min_weight_fraction_leaf_upper]
 
 				max_leaf_nodes_label = Label(text='max leaf\n  nodes', color=(1,1,1,2))
 				max_leaf_nodes_lower = TextInput(multiline=False,
@@ -714,6 +750,8 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(max_leaf_nodes_label)
 				layout.add_widget(max_leaf_nodes_lower)
 				layout.add_widget(max_leaf_nodes_upper)
+				limits['max_leaf_nodes'] = [max_leaf_nodes_lower, max_leaf_nodes_upper]
+				return limits
 
 			if self.ids.choose_classifier.text == 'Decision Tree':
 				layout.clear_widgets()
@@ -771,6 +809,8 @@ class RootWidget(TabbedPanel):
 
 			if self.ids.choose_classifier.text == 'KNN':
 				layout.clear_widgets()
+				limits = {}
+				limits['type'] = 'KNN'
 				n_neighbors_label = Label(text='n neighbors', color=(1,1,1,2))
 				n_neighbors_lower = TextInput(multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower value')
@@ -779,6 +819,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(n_neighbors_label)
 				layout.add_widget(n_neighbors_lower)
 				layout.add_widget(n_neighbors_upper)
+				limits['n_neighbors'] = [n_neighbors_lower, n_neighbors_upper]
 
 				p_label = Label(text='p', color=(1,1,1,2))
 				p_lower = TextInput(multiline=False,
@@ -788,6 +829,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(p_label)
 				layout.add_widget(p_lower)
 				layout.add_widget(p_upper)
+				limits['p'] = [p_lower, p_upper]
 
 				leaf_size_label = Label(text='leaf size', color=(1,1,1,2))
 				leaf_size_lower = TextInput(multiline=False,
@@ -797,6 +839,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(leaf_size_label)
 				layout.add_widget(leaf_size_lower)
 				layout.add_widget(leaf_size_upper)
+				limits['leaf_size'] = [leaf_size_lower, leaf_size_upper]
 
 				n_jobs_label = Label(text='n jobs', color=(1,1,1,2))
 				n_jobs_lower = TextInput(multiline=False,
@@ -806,6 +849,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(n_jobs_label)
 				layout.add_widget(n_jobs_lower)
 				layout.add_widget(n_jobs_upper)
+				limits['n_jobs'] = [n_jobs_lower, n_jobs_upper]
 
 				algorithm_label = Label(text = 'algorithm', color=(1,1,1,2))
 				algorithm_mainbutton = Button(text='Choose kernel',size_hint=(None, None), height=30,width=140)
@@ -821,9 +865,12 @@ class RootWidget(TabbedPanel):
 				weights_mainbutton.bind(on_press=lambda x:self.dropDown(['rbf','uniform', 'distance'], weights_mainbutton))
 				layout.add_widget(weights_label)
 				layout.add_widget(weights_mainbutton)
+				return limits
 
 			if self.ids.choose_classifier.text == 'ANN':
 				layout.clear_widgets()
+				limits = {}
+				limits['type'] = 'ANN'
 				hidden_layer_sizes_label = Label(text='hidden layer\n   sizes', color=(1,1,1,2))
 				hidden_layer_sizes_input_lower= TextInput(multiline=False,
 	                                   size_hint=(None, None), height=30,width=140, hint_text='lower value')
@@ -832,6 +879,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(hidden_layer_sizes_label)
 				layout.add_widget(hidden_layer_sizes_input_lower)
 				layout.add_widget(hidden_layer_sizes_input_upper)
+				limits['hidden_layer_sizes'] = [hidden_layer_sizes_input_lower, hidden_layer_sizes_input_upper]
 
 
 				max_iter_label = Label(text='max iter', color=(1,1,1,2))
@@ -842,6 +890,7 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(max_iter_label)
 				layout.add_widget(max_iter_input_lower)
 				layout.add_widget(max_iter_input_upper)
+				limits['max_iter'] = [max_iter_input_lower, max_iter_input_upper]
 
 
 				activation_label = Label(text = 'activation', color=(1,1,1,2))
@@ -878,13 +927,51 @@ class RootWidget(TabbedPanel):
 				layout.add_widget(momentum_label)
 				layout.add_widget(momentum_input_lower)
 				layout.add_widget(momentum_input_upper)
+				limits['momentum'] = [momentum_input_lower, momentum_input_upper]
+
+				return limits
 		else:
 			layout.clear_widgets()
 
+	def grid_search(self):
 
+		model_type = self.ids.choose_classifier.text
+		parameters = {}
 
+		if model_type == 'SVM':
+			# collect and arrange data
+			print self.c_lower
+			if self.c_lower.text != '0.0' and self.c_upper.text != '0.0':
+				c_lo = float(self.c_lower.text)
+				c_hi = float(self.c_upper.text)
+				c_range = np.arange(c_lo, c_hi, 0.1)
+				parameters['C'] = c_range
+				print 'gotcha'
 
+			if self.tol_lower.text != '0.0' and self.tol_upper.text != '0.0':
+				tol_lo = float(self.tol_lower.text)
+				tol_hi = float(self.tol_upper.text)
+				tol_range = np.arange(tol_lo, tol_hi, 0.01)
+				parameters['tol'] = tol_range
 
+			if self.degree_lower.text != '0' and self.degree_upper.text != '0':
+				degree_lo = int(self.degree_lower.text)
+				degree_hi = int(self.degree_upper.text)
+				degree_range = np.arange(degree_lo, degree_hi, 1)
+				parameters['degree'] = degree_range
+
+			if self.coef0_lower.text != '0.0' and self.coef0_upper.text != '0.0':
+				coef0_lo = float(self.coef0_lower.text)
+				coef0_hi = float(self.coef0_upper.text)
+				coef0_range = np.arange(coef0_lo, coef0_hi, 0.1)
+				parameters['coef0'] = coef0_range
+
+			model = SVC()
+			cv_model = GridSearchCV(estimator=model, param_grid=parameters, cv=10)
+			cv_model.fit(self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text])
+			print cv_model.best_params_, 'done'
+			print cv_model.best_score_
+			print cv_model.cv_results_
 
 	def manual_parameter_selection(self, *args):
 		pass
@@ -896,7 +983,7 @@ class RootWidget(TabbedPanel):
 
 		if name == 'gridcv':
 			pass
-			# accuracy = cross_val_score(model, self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text], cv=10, scoring='accuracy').mean()
+			# accuracy = cross_val_score(model, sellf.f.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text], cv=10, scoring='accuracy').mean()
 			# precision = cross_val_score(model, self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text], cv=10, scoring='average_precision').mean()
 			# f1_score = cross_val_score(model, self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text], cv=10, scoring='f1').mean()
 			# recall = cross_val_score(model, self.data.drop(self.ids.predict_dropdown_choose_parameter.text, axis=1), self.data[self.ids.predict_dropdown_choose_parameter.text], cv=10, scoring='recall').mean()
